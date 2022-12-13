@@ -14,7 +14,9 @@ class StackItemCase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return item.status == StackItemStatus.editing ? _buildEditing(context) : _buildNormal(context);
+    return item.status == StackItemStatus.editing
+        ? _buildEditing(context)
+        : _buildNormal(context);
   }
 
   /// Text
