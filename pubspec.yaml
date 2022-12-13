@@ -12,8 +12,8 @@ dependencies:
     sdk: flutter
 
   meta: ^1.7.0
-  stack_board_item: ^0.0.1+4
-  widget_style_extension: ^0.0.1
+  stack_board_item: ^0.0.1+8
+  widget_style_extension: ^0.0.1+3
 
 dev_dependencies:
   flutter_test:
