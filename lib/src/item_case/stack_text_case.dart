@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:stack_board_item/stack_board_item.dart';
 import 'package:stack_board_item_set/src/items/stack_text_item.dart';
 
-class StackItemCase extends StatelessWidget {
-  const StackItemCase({
+class StackTextCase extends StatelessWidget {
+  const StackTextCase({
     Key? key,
     required this.item,
   }) : super(key: key);
@@ -14,9 +14,7 @@ class StackItemCase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return item.status == StackItemStatus.editing
-        ? _buildEditing(context)
-        : _buildNormal(context);
+    return item.status == StackItemStatus.editing ? _buildEditing(context) : _buildNormal(context);
   }
 
   /// Text
