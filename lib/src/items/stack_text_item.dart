@@ -184,7 +184,8 @@ class StackTextItem extends StackItem<TextItemContent> {
       size: size ?? this.size,
       offset: offset ?? this.offset,
       status: status ?? this.status,
-      content: content == null ? null : contentGenerators?.call(content!),
+      content:
+          content == null ? null : contentGenerators?.call(content!) ?? content,
     );
   }
 }
