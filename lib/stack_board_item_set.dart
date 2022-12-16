@@ -1,7 +1,3 @@
 library stack_board_item_set;
 
-/// item case
-export 'src/item_case/stack_text_case.dart';
-
-/// items
-export 'src/items/stack_text_item.dart';
+export 'package:stack_board_item/stack_board_item.dart';

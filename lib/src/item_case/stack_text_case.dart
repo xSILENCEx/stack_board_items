@@ -23,7 +23,7 @@ class StackTextCase extends StatelessWidget {
     this.maxLines,
     this.inputFormatters,
     this.focusNode,
-    required this.enabled,
+    this.enabled = true,
   }) : super(key: key);
 
   final StackTextItem item;

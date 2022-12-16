@@ -22,6 +22,25 @@ class TextItemContent implements StackItemContent {
     this.selectionColor,
   });
 
+  factory TextItemContent.fromJson(Map<String, dynamic> data) {
+    return TextItemContent(
+      data: data['data'] == null ? null : asT<String>(data['data']),
+      style: data['style'] == null ? null : jsonToTextStyle(asMap(data['style'])),
+      strutStyle: data['strutStyle'] == null ? null : StackTextStrutStyle.fromJson(asMap(data['strutStyle'])),
+      textAlign: ExEnum.tryParse<TextAlign>(TextAlign.values, asT<String>(data['textAlign'])),
+      textDirection: ExEnum.tryParse<TextDirection>(TextDirection.values, asT<String>(data['textDirection'])),
+      locale: data['locale'] == null ? null : jsonToLocale(asMap(data['locale'])),
+      softWrap: data['softWrap'] == null ? null : asT<bool>(data['softWrap']),
+      overflow: ExEnum.tryParse<TextOverflow>(TextOverflow.values, asT<String>(data['overflow'])),
+      textScaleFactor: data['textScaleFactor'] == null ? null : asT<double>(data['textScaleFactor']),
+      maxLines: data['maxLines'] == null ? null : asT<int>(data['maxLines']),
+      semanticsLabel: data['semanticsLabel'] == null ? null : asT<String>(data['semanticsLabel']),
+      textWidthBasis: ExEnum.tryParse<TextWidthBasis>(TextWidthBasis.values, asT<String>(data['textWidthBasis'])),
+      textHeightBehavior:
+          data['textHeightBehavior'] == null ? null : jsonToTextHeightBehavior(asMap(data['textHeightBehavior'])),
+      selectionColor: data['selectionColor'] == null ? null : Color(asT<int>(data['selectionColor'])),
+    );
+  }
   final String? data;
   final TextStyle? style;
   final StackTextStrutStyle? strutStyle;
@@ -72,42 +91,6 @@ class TextItemContent implements StackItemContent {
   }
 
   @override
-  TextItemContent fromJson(Map<String, dynamic> data) {
-    return TextItemContent(
-      data: data['data'] == null ? null : asT<String>(data['data']),
-      style:
-          data['style'] == null ? null : jsonToTextStyle(asMap(data['style'])),
-      strutStyle: data['strutStyle'] == null
-          ? null
-          : StackTextStrutStyle.fromJson(asMap(data['strutStyle'])),
-      textAlign: ExEnum.tryParse<TextAlign>(
-          TextAlign.values, asT<String>(data['textAlign'])),
-      textDirection: ExEnum.tryParse<TextDirection>(
-          TextDirection.values, asT<String>(data['textDirection'])),
-      locale:
-          data['locale'] == null ? null : jsonToLocale(asMap(data['locale'])),
-      softWrap: data['softWrap'] == null ? null : asT<bool>(data['softWrap']),
-      overflow: ExEnum.tryParse<TextOverflow>(
-          TextOverflow.values, asT<String>(data['overflow'])),
-      textScaleFactor: data['textScaleFactor'] == null
-          ? null
-          : asT<double>(data['textScaleFactor']),
-      maxLines: data['maxLines'] == null ? null : asT<int>(data['maxLines']),
-      semanticsLabel: data['semanticsLabel'] == null
-          ? null
-          : asT<String>(data['semanticsLabel']),
-      textWidthBasis: ExEnum.tryParse<TextWidthBasis>(
-          TextWidthBasis.values, asT<String>(data['textWidthBasis'])),
-      textHeightBehavior: data['textHeightBehavior'] == null
-          ? null
-          : jsonToTextHeightBehavior(asMap(data['textHeightBehavior'])),
-      selectionColor: data['selectionColor'] == null
-          ? null
-          : Color(asT<int>(data['selectionColor'])),
-    );
-  }
-
-  @override
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       if (data != null) 'data': data,
@@ -122,8 +105,7 @@ class TextItemContent implements StackItemContent {
       if (maxLines != null) 'maxLines': maxLines,
       if (semanticsLabel != null) 'semanticsLabel': semanticsLabel,
       if (textWidthBasis != null) 'textWidthBasis': textWidthBasis?.toString(),
-      if (textHeightBehavior != null)
-        'textHeightBehavior': textHeightBehavior?.toJson(),
+      if (textHeightBehavior != null) 'textHeightBehavior': textHeightBehavior?.toJson(),
       if (selectionColor != null) 'selectionColor': selectionColor?.value,
     };
   }
@@ -147,15 +129,13 @@ class StackTextItem extends StackItem<TextItemContent> {
           content: content,
         );
 
-  @override
-  StackTextItem fromJson(Map<String, dynamic> data) {
+  factory StackTextItem.fromJson(Map<String, dynamic> data) {
     return StackTextItem(
       id: data['id'] == null ? null : asT<String>(data['id']),
       angle: data['angle'] == null ? null : asT<double>(data['angle']),
       size: data['size'] == null ? null : jsonToSize(asMap(data['size'])),
-      offset:
-          data['offset'] == null ? null : jsonToOffset(asMap(data['offset'])),
-      content: TextItemContent().fromJson(asMap(data['content'])),
+      offset: data['offset'] == null ? null : jsonToOffset(asMap(data['offset'])),
+      content: TextItemContent.fromJson(asMap(data['content'])),
     );
   }
 
@@ -163,9 +143,11 @@ class StackTextItem extends StackItem<TextItemContent> {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
+      'type': 'StackTextItem',
       if (angle != null) 'angle': angle,
       if (size != null) 'size': size?.toJson(),
       if (offset != null) 'offset': offset?.toJson(),
+      if (status != null) 'status': status?.index,
       if (content != null) 'content': content?.toJson(),
     };
   }
@@ -184,8 +166,7 @@ class StackTextItem extends StackItem<TextItemContent> {
       size: size ?? this.size,
       offset: offset ?? this.offset,
       status: status ?? this.status,
-      content:
-          content == null ? null : contentGenerators?.call(content!) ?? content,
+      content: content == null ? null : contentGenerators?.call(content!) ?? content,
     );
   }
 }

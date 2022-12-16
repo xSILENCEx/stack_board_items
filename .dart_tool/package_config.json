@@ -44,6 +44,18 @@
       "languageVersion": "2.17"
     },
     {
+      "name": "flutter_drawing_board",
+      "rootUri": "file:///Users/mike/flutter/.pub-cache/hosted/pub.flutter-io.cn/flutter_drawing_board-0.4.1+2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_hsvcolor_picker",
+      "rootUri": "file:///Users/mike/flutter/.pub-cache/hosted/pub.flutter-io.cn/flutter_hsvcolor_picker-1.2.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_lints",
       "rootUri": "file:///Users/mike/flutter/.pub-cache/hosted/pub.flutter-io.cn/flutter_lints-1.0.4",
       "packageUri": "lib/",
@@ -99,7 +111,7 @@
     },
     {
       "name": "stack_board_item",
-      "rootUri": "file:///Users/mike/flutter/.pub-cache/hosted/pub.flutter-io.cn/stack_board_item-0.0.1+8",
+      "rootUri": "file:///Users/mike/flutter/.pub-cache/hosted/pub.flutter-io.cn/stack_board_item-0.0.1+10",
       "packageUri": "lib/",
       "languageVersion": "2.16"
     },
@@ -152,7 +164,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-12-14T07:02:51.132127Z",
+  "generated": "2022-12-16T06:15:21.657871Z",
   "generator": "pub",
   "generatorVersion": "2.18.5"
 }
