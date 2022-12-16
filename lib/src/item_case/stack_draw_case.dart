@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
+import 'package:flutter_drawing_board/helpers.dart';
+import 'package:flutter_drawing_board/paint_contents.dart';
 import 'package:stack_board_item/stack_board_item.dart';
 import 'package:stack_board_item_set/src/items/stack_draw_item.dart';
 
@@ -11,11 +13,14 @@ class StackDrawCase extends StatefulWidget {
     Key? key,
     required this.item,
     this.background,
+    this.onPaint,
   }) : super(key: key);
 
   final StackDrawItem item;
 
   final Widget? background;
+
+  final Function(List<PaintContent> contents)? onPaint;
 
   @override
   State<StackDrawCase> createState() => _StackDrawCaseState();
@@ -23,6 +28,14 @@ class StackDrawCase extends StatefulWidget {
 
 class _StackDrawCaseState extends State<StackDrawCase> {
   final DrawingController _controller = DrawingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.item.content?.paintContents.isNotEmpty ?? false) {
+      _controller.addContents(widget.item.content!.paintContents);
+    }
+  }
 
   @override
   void dispose() {
@@ -44,11 +57,12 @@ class _StackDrawCaseState extends State<StackDrawCase> {
           alignment: Alignment.center,
           children: <Widget>[
             DrawingBoard(
-              onPointerUp: (_) => _controller.getHistory,
+              onPointerUp: (_) => widget.onPaint?.call(_controller.getHistory),
               controller: _controller,
               boardPanEnabled: false,
               boardScaleEnabled: false,
-              background: widget.background ?? Container(width: _size, height: _size, color: Colors.white),
+              background: widget.background ??
+                  Container(width: _size, height: _size, color: Colors.white),
             ),
             _tools(),
             _actions(),
@@ -69,7 +83,8 @@ class _StackDrawCaseState extends State<StackDrawCase> {
   /// 工具栏
   Widget _tools() {
     return _configBuilder(
-      shouldRebuild: (DrawConfig p, DrawConfig n) => p.fingerCount != n.fingerCount || p.contentType != n.contentType,
+      shouldRebuild: (DrawConfig p, DrawConfig n) =>
+          p.fingerCount != n.fingerCount || p.contentType != n.contentType,
       builder: (DrawConfig dc, Widget? child) {
         final bool isPen = _isEditing && dc.fingerCount == 1;
 
@@ -114,7 +129,8 @@ class _StackDrawCaseState extends State<StackDrawCase> {
   /// 操作栏
   Widget _actions() {
     return _configBuilder(
-      shouldRebuild: (DrawConfig p, DrawConfig n) => p.fingerCount != n.fingerCount,
+      shouldRebuild: (DrawConfig p, DrawConfig n) =>
+          p.fingerCount != n.fingerCount,
       builder: (DrawConfig dc, Widget? child) {
         final bool isPen = dc.fingerCount == 1;
 
@@ -157,13 +173,15 @@ class _StackDrawCaseState extends State<StackDrawCase> {
                   trackHeight: 2,
                 ),
                 child: _configBuilder(
-                  shouldRebuild: (DrawConfig p, DrawConfig n) => p.strokeWidth != n.strokeWidth,
+                  shouldRebuild: (DrawConfig p, DrawConfig n) =>
+                      p.strokeWidth != n.strokeWidth,
                   builder: (DrawConfig dc, _) {
                     return Slider(
                       value: dc.strokeWidth,
                       max: 40,
                       min: 1,
-                      onChanged: (double v) => _controller.setStyle(strokeWidth: v),
+                      onChanged: (double v) =>
+                          _controller.setStyle(strokeWidth: v),
                     );
                   },
                 ),

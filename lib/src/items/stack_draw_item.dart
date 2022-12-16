@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter_drawing_board/paint_contents.dart';
 import 'package:stack_board_item/stack_board_item.dart';
 
 import 'package:widget_style_extension/widget_style_extension.dart';
@@ -7,22 +8,66 @@ import 'package:widget_style_extension/widget_style_extension.dart';
 class DrawItemContent implements StackItemContent {
   DrawItemContent({
     required this.size,
+    required this.paintContents,
   });
 
-  factory DrawItemContent.fromJson(Map<String, dynamic> data) {
+  factory DrawItemContent.fromJson(
+    Map<String, dynamic> data, {
+    PaintContent Function(String type, Map<String, dynamic> jsonStepMap)?
+        contentFactory,
+  }) {
     return DrawItemContent(
       size: data['size'] as double,
+      paintContents: (data['paintContents'] as List<dynamic>).map((dynamic e) {
+        final String type = e['type'] as String;
+
+        final Map<String, dynamic> contentJson = e as Map<String, dynamic>;
+
+        switch (type) {
+          case 'Circle':
+            return Circle.fromJson(contentJson);
+          case 'Eraser':
+            return Eraser.fromJson(contentJson);
+          case 'Rectangle':
+            return Rectangle.fromJson(contentJson);
+          case 'SimpleLine':
+            return SimpleLine.fromJson(contentJson);
+          case 'SmoothLine':
+            return SmoothLine.fromJson(contentJson);
+          case 'StraightLine':
+            return StraightLine.fromJson(contentJson);
+        }
+
+        return contentFactory?.call(type, contentJson) ??
+            EmptyContent.fromJson(contentJson);
+      }).toList(),
     );
   }
 
   final double size;
+  final List<PaintContent> paintContents;
+
+  DrawItemContent copyWith({
+    double? size,
+    List<PaintContent>? paintContents,
+  }) {
+    return DrawItemContent(
+      size: size ?? this.size,
+      paintContents: paintContents ?? this.paintContents,
+    );
+  }
 
   @override
   Map<String, dynamic> toJson() {
-    return <String, dynamic>{};
+    return <String, dynamic>{
+      'size': size,
+      'paintContents':
+          paintContents.map((PaintContent e) => e.toJson()).toList(),
+    };
   }
 }
 
+/// StackDrawItem
 class StackDrawItem extends StackItem<DrawItemContent> {
   StackDrawItem({
     DrawItemContent? content,
@@ -41,7 +86,15 @@ class StackDrawItem extends StackItem<DrawItemContent> {
         );
 
   factory StackDrawItem.fromJson(Map<String, dynamic> data) {
-    return StackDrawItem();
+    return StackDrawItem(
+      id: data['id'] as String?,
+      angle: data['angle'] as double?,
+      size: jsonToSize(data['size'] as Map<String, dynamic>),
+      offset: jsonToOffset(data['offset'] as Map<String, dynamic>),
+      status: StackItemStatus.values[data['status'] as int],
+      content:
+          DrawItemContent.fromJson(data['content'] as Map<String, dynamic>),
+    );
   }
 
   @override
@@ -54,11 +107,12 @@ class StackDrawItem extends StackItem<DrawItemContent> {
   }) {
     return StackDrawItem(
       id: id,
-      size: size ?? this.size!,
+      size: size ?? this.size ?? const Size(300, 300),
       offset: offset ?? this.offset,
       angle: angle ?? this.angle,
       status: status ?? this.status,
-      content: content == null ? null : contentGenerators?.call(content!) ?? content,
+      content:
+          content == null ? null : contentGenerators?.call(content!) ?? content,
     );
   }
 

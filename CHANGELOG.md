@@ -1,12 +1,13 @@
-## 0.0.1
+## 0.0.2
 
-* First commit
+* Adjustment details
+* Add `DrawItemContent`
 
 ## 0.0.1+3
 
 * Fix bug
 
-## 0.0.2
+## 0.0.1
 
-* Adjustment details
-* Add `DrawItemContent`
+* First commit
+

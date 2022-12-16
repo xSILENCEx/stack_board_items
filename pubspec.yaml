@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_drawing_board: ^0.4.1+2
+  flutter_drawing_board: ^0.4.1+4
   meta: ^1.7.0
   stack_board_item: ^0.0.1+10
   widget_style_extension: ^0.0.1+4
